@@ -1,20 +1,21 @@
 package org.javaacademy.repository;
 
 import org.javaacademy.model.Currency;
+import org.javaacademy.util.ConfiguredDataSource;
 
+import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class JdbcCurrencyRepository {
+    private final DataSource dataSource = ConfiguredDataSource.getInstance();
+
     public List<Currency> findAll() throws SQLException {
         final String query = "SELECT * FROM currencies";
 
-        try(Connection connection = DriverManager.getConnection(
-                "jdbc:postgresql://localhost:5432/CurrencyExchange",
-                "postgres",
-                "1703")) {
+        try(Connection connection = dataSource.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(query);
             statement.execute();
             ResultSet resultSet = statement.getResultSet();
@@ -30,10 +31,7 @@ public class JdbcCurrencyRepository {
     public Optional<Currency> findByCode(String code) throws SQLException {
         final String query = "SELECT * FROM currencies WHERE code = ?";
 
-        try (Connection connection = DriverManager.getConnection(
-                "jdbc:postgresql://localhost:5432/CurrencyExchange",
-                "postgres",
-                "1703")) {
+        try (Connection connection = dataSource.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, code);
             statement.execute();
@@ -50,10 +48,7 @@ public class JdbcCurrencyRepository {
     public Integer save(Currency entity) throws SQLException {
         final String query = "INSERT INTO currencies (code, full_name, sign) VALUES (?, ?, ?)";
 
-        try (Connection connection = DriverManager.getConnection(
-                "jdbc:postgresql://localhost:5432/CurrencyExchange",
-                "postgres",
-                "1703")) {
+        try (Connection connection = dataSource.getConnection()) {
             connection.setAutoCommit(false);
             PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 
@@ -65,7 +60,7 @@ public class JdbcCurrencyRepository {
 
             ResultSet savedCurrency = statement.getGeneratedKeys();
             savedCurrency.next();
-            long savedId = savedCurrency.getLong("id");
+            Integer savedId = savedCurrency.getInt("id");
 
             connection.commit();
 

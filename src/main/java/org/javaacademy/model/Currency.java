@@ -1,5 +1,6 @@
 package org.javaacademy.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,6 +11,7 @@ import lombok.NoArgsConstructor;
 public class Currency {
     private Integer id;
     private String code;
+    @JsonProperty("full_name")
     private String fullName;
     private String sign;
 }

@@ -26,11 +26,14 @@ public class CurrenciesServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         try {
             List<Currency> currencyList = currencyRepository.findAll();
+            System.out.println("Currency list: " + currencyList); // Логируем список
             objectMapper.writeValue(resp.getWriter(), currencyList);
 
         } catch (SQLException e) {
+            e.printStackTrace();
             resp.setStatus(SC_INTERNAL_SERVER_ERROR);
             objectMapper.writeValue(resp.getWriter(), new ErrorResponse(
+
                     SC_INTERNAL_SERVER_ERROR,
                     "Something happened with the database, try again later!"
             ));
