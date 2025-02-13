@@ -1,4 +1,4 @@
-package org.javaacademy.model.response;
+package org.javaacademy.model.dtoRs;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,6 +1,6 @@
 package org.javaacademy.repository;
 
-import org.javaacademy.model.Currency;
+import org.javaacademy.model.entity.Currency;
 import org.javaacademy.util.ConfiguredDataSource;
 
 import javax.sql.DataSource;
@@ -9,20 +9,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class JdbcCurrencyRepository {
+public class CurrencyRepository {
     private final DataSource dataSource = ConfiguredDataSource.getInstance();
 
     public List<Currency> findAll() throws SQLException {
         final String query = "SELECT * FROM currencies";
 
         try(Connection connection = dataSource.getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(query);
-            statement.execute();
-            ResultSet resultSet = statement.getResultSet();
+            PreparedStatement statement = connection.prepareStatement(query); // Создаем SQL-запрос
+            statement.execute(); // Выполняем его
+            ResultSet resultSet = statement.getResultSet(); // Получаем результаты
 
             List<Currency> currencyList = new ArrayList<>();
-            while (resultSet.next()) {
-                currencyList.add(getCurrency(resultSet));
+            while (resultSet.next()) { // Перебираем строки результата
+                currencyList.add(getCurrency(resultSet)); // Преобразуем их в объекты Currency
             }
             return currencyList;
         }
@@ -33,7 +33,7 @@ public class JdbcCurrencyRepository {
 
         try (Connection connection = dataSource.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(query);
-            statement.setString(1, code);
+            statement.setString(1, code);  // Передаем значение в SQL-запрос
             statement.execute();
             ResultSet resultSet = statement.getResultSet();
 

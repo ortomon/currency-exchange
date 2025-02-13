@@ -6,9 +6,9 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.javaacademy.model.Currency;
-import org.javaacademy.model.response.ErrorResponse;
-import org.javaacademy.repository.JdbcCurrencyRepository;
+import org.javaacademy.model.dtoRs.ErrorResponse;
+import org.javaacademy.model.entity.Currency;
+import org.javaacademy.repository.CurrencyRepository;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -19,7 +19,7 @@ import static org.javaacademy.util.Validation.isValidCurrencyCode;
 
 @WebServlet(name = "CurrencyServlet", urlPatterns = "/currency/*")
 public class CurrencyServlet extends HttpServlet {
-    private final JdbcCurrencyRepository currencyRepository = new JdbcCurrencyRepository();
+    private final CurrencyRepository currencyRepository = new CurrencyRepository();
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Override

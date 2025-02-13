@@ -1,4 +1,4 @@
-package org.javaacademy.model;
+package org.javaacademy.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;

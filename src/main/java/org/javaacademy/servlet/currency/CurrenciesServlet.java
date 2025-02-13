@@ -5,9 +5,9 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.javaacademy.model.Currency;
-import org.javaacademy.model.response.ErrorResponse;
-import org.javaacademy.repository.JdbcCurrencyRepository;
+import org.javaacademy.model.dtoRs.ErrorResponse;
+import org.javaacademy.model.entity.Currency;
+import org.javaacademy.repository.CurrencyRepository;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -18,7 +18,7 @@ import static org.javaacademy.util.Validation.isValidCurrencyCode;
 
 @WebServlet(name = "CurrenciesServlet", urlPatterns = "/currencies")
 public class CurrenciesServlet extends HttpServlet {
-    private final JdbcCurrencyRepository currencyRepository = new JdbcCurrencyRepository();
+    private final CurrencyRepository currencyRepository = new CurrencyRepository();
     private final ObjectMapper objectMapper = new ObjectMapper();
     private final String INTEGRITY_CONSTRAINT_VIOLATION_CODE = "23505";
 
@@ -26,11 +26,9 @@ public class CurrenciesServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         try {
             List<Currency> currencyList = currencyRepository.findAll();
-            System.out.println("Currency list: " + currencyList); // Логируем список
             objectMapper.writeValue(resp.getWriter(), currencyList);
 
         } catch (SQLException e) {
-            e.printStackTrace();
             resp.setStatus(SC_INTERNAL_SERVER_ERROR);
             objectMapper.writeValue(resp.getWriter(), new ErrorResponse(
 
