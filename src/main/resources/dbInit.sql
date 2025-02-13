@@ -1,9 +1,6 @@
 CREATE TABLE if not exists Currencies (
-                                          id
-                                          SERIAL
-                                          PRIMARY
-                                          KEY,
-                                          code VARCHAR(10) UNIQUE NOT NULL,
+    id SERIAL PRIMARY KEY,
+    code VARCHAR(10) UNIQUE NOT NULL,
     full_name VARCHAR(255) NOT NULL,
     sign VARCHAR(10) NOT NULL
     );
